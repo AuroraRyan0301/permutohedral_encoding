@@ -1,0 +1,33 @@
+ninja_required_version = 1.3
+cxx = c++
+nvcc = /usr/local/cuda/bin/nvcc
+
+cflags = -pthread -B /data/yuruihan/miniconda3/envs/irtk/compiler_compat -Wno-unused-result -Wsign-compare -DNDEBUG -O2 -Wall -fPIC -O2 -isystem /data/yuruihan/miniconda3/envs/irtk/include -I/data/yuruihan/miniconda3/envs/irtk/include -fPIC -O2 -isystem /data/yuruihan/miniconda3/envs/irtk/include -fPIC -I/buffer/yuruihan/envmapplus/permutohedral_encoding/include -I/buffer/yuruihan/envmapplus/permutohedral_encoding/kernels -I/buffer/yuruihan/envmapplus/permutohedral_encoding/deps -I/data/yuruihan/miniconda3/envs/irtk/lib/python3.9/site-packages/torch/include -I/data/yuruihan/miniconda3/envs/irtk/lib/python3.9/site-packages/torch/include/torch/csrc/api/include -I/data/yuruihan/miniconda3/envs/irtk/lib/python3.9/site-packages/torch/include/TH -I/data/yuruihan/miniconda3/envs/irtk/lib/python3.9/site-packages/torch/include/THC -I/usr/local/cuda/include -I/data/yuruihan/miniconda3/envs/irtk/include/python3.9 -c
+post_cflags = -std=c++17 -DPENC_MIN_GPU_ARCH=86 -DTORCH_API_INCLUDE_EXTENSION_H '-DPYBIND11_COMPILER_TYPE="_gcc"' '-DPYBIND11_STDLIB="_libstdcpp"' '-DPYBIND11_BUILD_ABI="_cxxabi1011"' -DTORCH_EXTENSION_NAME=_86_C -D_GLIBCXX_USE_CXX11_ABI=0
+cuda_cflags = -I/buffer/yuruihan/envmapplus/permutohedral_encoding/include -I/buffer/yuruihan/envmapplus/permutohedral_encoding/kernels -I/buffer/yuruihan/envmapplus/permutohedral_encoding/deps -I/data/yuruihan/miniconda3/envs/irtk/lib/python3.9/site-packages/torch/include -I/data/yuruihan/miniconda3/envs/irtk/lib/python3.9/site-packages/torch/include/torch/csrc/api/include -I/data/yuruihan/miniconda3/envs/irtk/lib/python3.9/site-packages/torch/include/TH -I/data/yuruihan/miniconda3/envs/irtk/lib/python3.9/site-packages/torch/include/THC -I/usr/local/cuda/include -I/data/yuruihan/miniconda3/envs/irtk/include/python3.9 -c
+cuda_post_cflags = -D__CUDA_NO_HALF_OPERATORS__ -D__CUDA_NO_HALF_CONVERSIONS__ -D__CUDA_NO_BFLOAT16_CONVERSIONS__ -D__CUDA_NO_HALF2_OPERATORS__ --expt-relaxed-constexpr --compiler-options ''"'"'-fPIC'"'"'' -std=c++17 --generate-line-info --extended-lambda --expt-relaxed-constexpr -U__CUDA_NO_HALF_OPERATORS__ -U__CUDA_NO_HALF_CONVERSIONS__ -U__CUDA_NO_HALF2_OPERATORS__ -Xcompiler=-Wno-float-conversion -Xcompiler=-fno-strict-aliasing -gencode=arch=compute_86,code=compute_86 -gencode=arch=compute_86,code=sm_86 -DPENC_MIN_GPU_ARCH=86 -DTORCH_API_INCLUDE_EXTENSION_H '-DPYBIND11_COMPILER_TYPE="_gcc"' '-DPYBIND11_STDLIB="_libstdcpp"' '-DPYBIND11_BUILD_ABI="_cxxabi1011"' -DTORCH_EXTENSION_NAME=_86_C -D_GLIBCXX_USE_CXX11_ABI=0
+cuda_dlink_post_cflags = 
+ldflags = 
+
+rule compile
+  command = $cxx -MMD -MF $out.d $cflags -c $in -o $out $post_cflags
+  depfile = $out.d
+  deps = gcc
+
+rule cuda_compile
+  depfile = $out.d
+  deps = gcc
+  command = $nvcc --generate-dependencies-with-compile --dependency-output $out.d $cuda_cflags -c $in -o $out $cuda_post_cflags
+
+
+
+
+
+build /buffer/yuruihan/envmapplus/permutohedral_encoding/build/temp.linux-x86_64-cpython-39/./src/Encoding.o: cuda_compile /buffer/yuruihan/envmapplus/permutohedral_encoding/src/Encoding.cu
+build /buffer/yuruihan/envmapplus/permutohedral_encoding/build/temp.linux-x86_64-cpython-39/./src/PyBridge.o: compile /buffer/yuruihan/envmapplus/permutohedral_encoding/src/PyBridge.cxx
+
+
+
+
+
+

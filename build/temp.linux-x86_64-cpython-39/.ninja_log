@@ -1,0 +1,5 @@
+# ninja log v5
+0	18530	1728811322019107445	/buffer/yuruihan/envmapplus/permutohedral_encoding/build/temp.linux-x86_64-cpython-39/src/PyBridge.o	4edd49a9931d97b0
+15	45947	1728811386814916891	/buffer/yuruihan/envmapplus/permutohedral_encoding/build/temp.linux-x86_64-cpython-39/src/Encoding.o	28b604be810023be
+13	19044	1728811439398781879	/buffer/yuruihan/envmapplus/permutohedral_encoding/build/temp.linux-x86_64-cpython-39/src/PyBridge.o	f469118a7e573ef6
+13	46340	1728811466662718174	/buffer/yuruihan/envmapplus/permutohedral_encoding/build/temp.linux-x86_64-cpython-39/src/Encoding.o	3ad54890a210df8a
